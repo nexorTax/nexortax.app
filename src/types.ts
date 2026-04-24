@@ -1,8 +1,45 @@
 export interface FirmRegisterDto {
   firmName: string;
+  corporateName?: string;
+  cnpj: string;
+  stateRegistration?: string;
+  municipalRegistration?: string;
+  primaryEmail: string;
+  primaryPhone?: string;
+  website?: string;
+  contactName: string;
+  contactRole?: string;
+  notes?: string;
+  postalCode: string;
+  street: string;
+  number: string;
+  complement?: string;
+  neighborhood: string;
+  city: string;
+  state: string;
   adminName: string;
   adminEmail: string;
   adminPassword: string;
+  isActive: boolean;
+}
+
+export interface MasterLoginResponse {
+  accessToken: string;
+  username?: string;
+}
+
+export interface MasterFirmListItemDto {
+  id: string;
+  name: string;
+  tradeName?: string;
+  cnpj?: string;
+  primaryEmail?: string;
+  primaryPhone?: string;
+  city?: string;
+  state?: string;
+  contactName?: string;
+  isActive: boolean;
+  createdAt: string;
 }
 
 export interface UserRegisterDto {
@@ -30,11 +67,6 @@ export interface DashboardMetricsDto {
   creditThisMonth: number;
 }
 
-/**
- * Retorno esperado do endpoint de login. Deve conter ao menos
- * accessToken e refreshToken; firmId e role são usados para
- * personalizar a UI no front-end.
- */
 export interface LoginResponse {
   accessToken: string;
   refreshToken: string;
@@ -42,15 +74,8 @@ export interface LoginResponse {
   role: string;
 }
 
-// ================================================================
-// Auditoria Tributária types
-// These interfaces mirror the DTOs and entities returned by the
-// backend audit module. Keeping them separate allows for strong
-// typing in service calls and React components.
-// ================================================================
-
 export interface AvailablePeriodDto {
-  periodStart: string; // ISO string
+  periodStart: string;
   periodEnd: string;
   sourceType: string;
   hasXml: boolean;

@@ -17,6 +17,8 @@ import type {
   AuditFindingListDto,
   AuditFindingDetailDto,
   AuditCreditOpportunity,
+  MasterFirmListItemDto,
+  MasterLoginResponse,
 } from "../types";
 
 const API_BASE = import.meta.env.VITE_API_BASE ?? "https://localhost:5001";
@@ -35,10 +37,29 @@ async function handleJsonResponse(res: Response) {
   return res.json();
 }
 
-export async function registerFirm(dto: FirmRegisterDto): Promise<void> {
-  const res = await fetch(`${API_BASE}/api/firms/register`, {
+export async function masterLoginRequest(username: string, password: string): Promise<MasterLoginResponse> {
+  const res = await fetch(`${API_BASE}/api/auth/master-login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password }),
+  });
+  return handleJsonResponse(res);
+}
+
+export async function fetchMasterFirms(masterToken: string): Promise<MasterFirmListItemDto[]> {
+  const res = await fetch(`${API_BASE}/api/firms/master`, {
+    headers: { Authorization: `Bearer ${masterToken}` },
+  });
+  return handleJsonResponse(res);
+}
+
+export async function registerFirm(dto: FirmRegisterDto, masterToken: string): Promise<void> {
+  const res = await fetch(`${API_BASE}/api/firms/register`, {
+    method: "POST",
+    headers: { 
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${masterToken}` 
+    },
     body: JSON.stringify(dto),
   });
   if (!res.ok) {
